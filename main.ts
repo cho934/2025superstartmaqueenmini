@@ -36,23 +36,20 @@ function untilDetectionAndTime (num: number) {
             maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CCW, 100)
             // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.LeftMotor, maqueenPlusV2.MyEnumDir.Forward, 60)
             // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.RightMotor, maqueenPlusV2.MyEnumDir.Backward, 5)
-            basic.pause(500)
+            basic.pause(200)
             maqueen.writeLED(maqueen.LED.LEDLeft, maqueen.LEDswitch.turnOff)
             maqueen.writeLED(maqueen.LED.LEDLeft, maqueen.LEDswitch.turnOff)
             break;
         }
     }
+    StopMotors()
 }
 input.onButtonPressed(Button.A, function () {
     color = 1
     GOGOGO()
-    StopMotors()
     recalage()
-    StopMotors()
     untilV53L1X()
-    StopMotors()
     avance2cm()
-    StopMotors()
     butiner()
 })
 function butiner () {
@@ -66,13 +63,11 @@ function GOGOGO () {
     if (color == 2) {
         maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 250)
         maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 150)
-        // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Forward, 50)
-        basic.pause(4300)
+        untilDetectionAndTime(4600)
     } else {
         maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 150)
         maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 250)
-        // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Forward, 50)
-        basic.pause(4300)
+        untilDetectionAndTime(4600)
     }
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 50)
     // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Forward, 50)
@@ -82,14 +77,15 @@ function GOGOGO () {
         maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 60)
         // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.LeftMotor, maqueenPlusV2.MyEnumDir.Backward, 5)
         // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.RightMotor, maqueenPlusV2.MyEnumDir.Forward, 60)
-        basic.pause(1000)
+        basic.pause(900)
     } else {
         maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 60)
         maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CCW, 5)
         // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.LeftMotor, maqueenPlusV2.MyEnumDir.Forward, 60)
         // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.RightMotor, maqueenPlusV2.MyEnumDir.Backward, 5)
-        basic.pause(1000)
+        basic.pause(900)
     }
+    StopMotors()
 }
 radio.onReceivedString(function (receivedString) {
     if (receivedString == "BLUE") {
@@ -102,13 +98,9 @@ radio.onReceivedString(function (receivedString) {
 input.onButtonPressed(Button.B, function () {
     color = 2
     GOGOGO()
-    StopMotors()
     recalage()
-    StopMotors()
     untilV53L1X()
-    StopMotors()
     avance2cm()
-    StopMotors()
     butiner()
 })
 function untilV53L1X () {
@@ -142,7 +134,7 @@ function avance2cm () {
     maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 30)
     maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 30)
     // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Forward, 50)
-    basic.pause(300)
+    basic.pause(150)
     StopMotors()
 }
 let endOfMach = 0
@@ -196,7 +188,9 @@ basic.forever(function () {
     basic.showIcon(IconNames.Angry)
     basic.pause(85000)
     GOGOGO()
+    recalage()
     untilV53L1X()
+    avance2cm()
     StopMotors()
     butiner()
     tirette = 0
@@ -206,7 +200,7 @@ control.inBackground(function () {
     while (tirette == 0) {
         basic.pause(100)
     }
-    basic.pause(10000)
+    basic.pause(100000)
     endOfMach = 1
     butiner()
     while (true) {
