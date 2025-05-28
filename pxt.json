@@ -6,7 +6,9 @@
         "radio": "*",
         "microphone": "*",
         "vl53l1x-calliopemini": "github:cho934/vl53l1x-calliope#v1.0.0",
-        "maqueen": "github:dfrobot/pxt-maqueen#v1.7.15"
+        "maqueen": "github:dfrobot/pxt-maqueen#v1.7.15",
+        "servo": "*",
+        "neopixel": "github:microsoft/pxt-neopixel#v0.7.6"
     },
     "files": [
         "main.blocks",
