@@ -8,6 +8,12 @@ radio.onReceivedNumber(function (receivedNumber) {
     if (receivedNumber == 44) {
         tirette = 1
     }
+    if (receivedNumber == 22) {
+        color = 2
+    }
+    if (receivedNumber == 11) {
+        color = 1
+    }
 })
 function StopMotors () {
     // maqueenPlusV2.controlMotorStop(maqueenPlusV2.MyEnumMotor.AllMotor)
@@ -139,19 +145,19 @@ let distancedetection = 0
 let timer_ongoing = 0
 let timer_init = 0
 let color = 0
-let tirette = 0
 let butiner2 = 0
+let tirette = 0
 let enabledetection = 0
 let dist = 0
 let countdetection = 0
+tirette = 0
 butiner2 = 0
+color = 0
 Maqueen_V5.I2CInit()
 maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
 radio.setGroup(169)
 radio.setFrequencyBand(64)
 radio.setTransmitPower(7)
-tirette = 0
-color = 0
 // maqueenPlusV2.I2CInit()
 serial.redirectToUSB()
 VL53L1X.init()
