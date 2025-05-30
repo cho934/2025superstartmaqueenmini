@@ -46,13 +46,10 @@ function untilDetectionAndTime (num: number) {
 }
 input.onButtonPressed(Button.A, function () {
     color = 1
-    GOGOGO()
-    recalage()
-    untilV53L1X()
-    avance2cm()
     butiner()
 })
 function butiner () {
+    butiner2 = 1
     maqueen.servoRun(maqueen.Servos.S2, 10)
 }
 function GOGOGO () {
@@ -134,7 +131,7 @@ function avance2cm () {
     maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 30)
     maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 30)
     // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Forward, 50)
-    basic.pause(150)
+    basic.pause(120)
     StopMotors()
 }
 let endOfMach = 0
@@ -143,9 +140,11 @@ let timer_ongoing = 0
 let timer_init = 0
 let color = 0
 let tirette = 0
-let enabledetection = 0
-let dist = 0
+let butiner2 = 0
+butiner2 = 0
 let countdetection = 0
+let dist = 0
+let enabledetection = 0
 Maqueen_V5.I2CInit()
 maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
 radio.setGroup(169)
@@ -210,9 +209,29 @@ control.inBackground(function () {
 control.inBackground(function () {
     while (true) {
         if (color == 2) {
-            strip.showColor(neopixel.colors(NeoPixelColors.Blue))
+            if (butiner2 == 1) {
+                strip.clear()
+                strip.showColor(neopixel.colors(NeoPixelColors.Black))
+                strip.show()
+                basic.pause(500)
+                strip.showRainbow(1, 360)
+                strip.show()
+                basic.pause(500)
+            } else {
+                strip.showColor(neopixel.colors(NeoPixelColors.Blue))
+            }
         } else {
-            strip.showColor(neopixel.colors(NeoPixelColors.Yellow))
+            if (butiner2 == 1) {
+                strip.clear()
+                strip.showColor(neopixel.colors(NeoPixelColors.Black))
+                strip.show()
+                basic.pause(500)
+                strip.showRainbow(1, 360)
+                strip.show()
+                basic.pause(500)
+            } else {
+                strip.showColor(neopixel.colors(NeoPixelColors.Yellow))
+            }
         }
         // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Forward, 50)
         basic.pause(1000)
