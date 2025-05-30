@@ -52,6 +52,10 @@ function untilDetectionAndTime (num: number) {
 }
 input.onButtonPressed(Button.A, function () {
     color = 1
+    GOGOGO()
+    recalage()
+    untilV53L1X()
+    avance2cm()
     butiner()
 })
 function butiner () {
