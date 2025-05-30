@@ -141,10 +141,10 @@ let timer_init = 0
 let color = 0
 let tirette = 0
 let butiner2 = 0
-butiner2 = 0
-let countdetection = 0
-let dist = 0
 let enabledetection = 0
+let dist = 0
+let countdetection = 0
+butiner2 = 0
 Maqueen_V5.I2CInit()
 maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 0)
 radio.setGroup(169)
@@ -196,17 +196,6 @@ basic.forever(function () {
     color = 0
 })
 control.inBackground(function () {
-    while (tirette == 0) {
-        basic.pause(100)
-    }
-    basic.pause(100000)
-    endOfMach = 1
-    butiner()
-    while (true) {
-        StopMotors()
-    }
-})
-control.inBackground(function () {
     while (true) {
         if (color == 2) {
             if (butiner2 == 1) {
@@ -235,5 +224,16 @@ control.inBackground(function () {
         }
         // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Forward, 50)
         basic.pause(1000)
+    }
+})
+control.inBackground(function () {
+    while (tirette == 0) {
+        basic.pause(100)
+    }
+    basic.pause(100000)
+    endOfMach = 1
+    butiner()
+    while (true) {
+        StopMotors()
     }
 })
