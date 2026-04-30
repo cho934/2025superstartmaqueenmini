@@ -1,7 +1,13 @@
 function recalage () {
-    maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CCW, 100)
+    if (color == 2) {
+        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CCW, 100)
+        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CCW, 20)
+    } else {
+        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CCW, 20)
+        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CCW, 100)
+    }
     // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Backward, 40)
-    basic.pause(500)
+    basic.pause(3000)
     StopMotors()
 }
 radio.onReceivedNumber(function (receivedNumber) {
@@ -70,11 +76,11 @@ function GOGOGO () {
     if (color == 2) {
         maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 250)
         maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 150)
-        untilDetectionAndTime(4600)
+        untilDetectionAndTime(1600)
     } else {
         maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 150)
         maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 250)
-        untilDetectionAndTime(4600)
+        untilDetectionAndTime(1600)
     }
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 50)
     // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Forward, 50)
@@ -141,7 +147,7 @@ function avance2cm () {
     maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 30)
     maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 30)
     // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Forward, 50)
-    basic.pause(120)
+    basic.pause(200)
     StopMotors()
 }
 let endOfMach = 0
@@ -151,6 +157,13 @@ let timer_init = 0
 let color = 0
 let butiner2 = 0
 let tirette = 0
+basic.showLeds(`
+    . . . . .
+    . . # . .
+    . . # . .
+    . . # . .
+    . . # . .
+    `)
 let enabledetection = 0
 let dist = 0
 let countdetection = 0
@@ -167,7 +180,7 @@ serial.redirectToUSB()
 VL53L1X.init()
 VL53L1X.setDistanceMode(VL53L1X.DistanceMode.Short)
 VL53L1X.setMeasurementTimingBudget(50000)
-maqueen.servoRun(maqueen.Servos.S2, 85)
+maqueen.servoRun(maqueen.Servos.S2, 83)
 let strip = neopixel.create(DigitalPin.P15, 4, NeoPixelMode.RGB)
 strip.clear()
 strip.show()
@@ -195,7 +208,7 @@ basic.forever(function () {
     }
     basic.clearScreen()
     basic.showIcon(IconNames.Angry)
-    basic.pause(85000)
+    basic.pause(100)
     GOGOGO()
     recalage()
     untilV53L1X()
@@ -240,7 +253,7 @@ control.inBackground(function () {
     while (tirette == 0) {
         basic.pause(100)
     }
-    basic.pause(100000)
+    basic.pause(99500)
     endOfMach = 1
     butiner()
     while (true) {
