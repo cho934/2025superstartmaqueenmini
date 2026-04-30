@@ -1,0 +1,2 @@
+# Forcer LF pour tous les fichiers texte (cf migration-offline.md "Bugs connus")
+* text=auto eol=lf
