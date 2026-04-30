@@ -110,6 +110,12 @@ input.onButtonPressed(Button.B, function () {
     avance2cm()
     butiner()
 })
+input.onLogoEvent(TouchButtonEvent.Pressed, function () {
+    VL53L1X.init()
+    VL53L1X.setMeasurementTimingBudget(50000)
+    VL53L1X.setDistanceMode(VL53L1X.DistanceMode.Short)
+    untilV53L1X()
+})
 function untilV53L1X () {
     maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 60)
     maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 60)
@@ -131,12 +137,6 @@ function untilV53L1X () {
     }
     StopMotors()
 }
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
-    VL53L1X.init()
-    VL53L1X.setMeasurementTimingBudget(50000)
-    VL53L1X.setDistanceMode(VL53L1X.DistanceMode.Short)
-    untilV53L1X()
-})
 function avance2cm () {
     maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 30)
     maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 30)
@@ -151,9 +151,9 @@ let timer_init = 0
 let color = 0
 let butiner2 = 0
 let tirette = 0
-let enabledetection = 0
-let dist = 0
 let countdetection = 0
+let dist = 0
+let enabledetection = 0
 tirette = 0
 butiner2 = 0
 color = 0
