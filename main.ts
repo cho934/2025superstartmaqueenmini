@@ -1,13 +1,13 @@
 function recalage () {
     if (color == 2) {
-        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CCW, 100)
-        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CCW, 20)
+        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CCW, 40)
+        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CCW, 40)
     } else {
-        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CCW, 20)
-        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CCW, 100)
+        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CCW, 40)
+        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CCW, 40)
     }
     // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Backward, 40)
-    basic.pause(3000)
+    basic.pause(2000)
     StopMotors()
 }
 radio.onReceivedNumber(function (receivedNumber) {
@@ -75,12 +75,12 @@ function GOGOGO () {
     basic.pause(500)
     if (color == 2) {
         maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 250)
-        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 150)
-        untilDetectionAndTime(1600)
+        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 200)
+        untilDetectionAndTime(1400)
     } else {
-        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 150)
+        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 200)
         maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 250)
-        untilDetectionAndTime(1600)
+        untilDetectionAndTime(1400)
     }
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 50)
     // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Forward, 50)
@@ -123,8 +123,8 @@ input.onLogoEvent(TouchButtonEvent.Pressed, function () {
     untilV53L1X()
 })
 function untilV53L1X () {
-    maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 60)
-    maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 60)
+    maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 180)
+    maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 180)
     // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Forward, 30)
     while (true) {
         distancedetection = VL53L1X.readSingle()
@@ -134,12 +134,12 @@ function untilV53L1X () {
         400,
         false
         )
-        if (distancedetection >= 90 || distancedetection < 50) {
+        if (distancedetection >= 100 || distancedetection < 50) {
             StopMotors()
             break;
         }
         // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Forward, 30)
-        basic.pause(50)
+        basic.pause(30)
     }
     StopMotors()
 }
@@ -147,7 +147,7 @@ function avance2cm () {
     maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 30)
     maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 30)
     // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Forward, 50)
-    basic.pause(200)
+    basic.pause(100)
     StopMotors()
 }
 let endOfMach = 0
@@ -157,16 +157,9 @@ let timer_init = 0
 let color = 0
 let butiner2 = 0
 let tirette = 0
-basic.showLeds(`
-    . . . . .
-    . . # . .
-    . . # . .
-    . . # . .
-    . . # . .
-    `)
-let enabledetection = 0
-let dist = 0
 let countdetection = 0
+let dist = 0
+let enabledetection = 0
 tirette = 0
 butiner2 = 0
 color = 0
