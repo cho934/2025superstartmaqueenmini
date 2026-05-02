@@ -65,17 +65,8 @@ input.onButtonPressed(Button.A, function () {
     butiner()
 })
 function alarme () {
-    basic.showIcon(IconNames.Skull)
-    music.play(music.createSoundExpression(
-    WaveShape.Sine,
-    5000,
-    0,
-    255,
-    0,
-    500,
-    SoundExpressionEffect.None,
-    InterpolationCurve.Linear
-    ), music.PlaybackMode.UntilDone)
+    basic.showIcon(IconNames.Heart)
+    music.setVolume(255)
     music.playTone(988, 200)
     music.playTone(740, 200)
     basic.pause(100)
@@ -103,12 +94,12 @@ function GOGOGO () {
     basic.pause(100)
     if (color == 2) {
         maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CCW, 5)
-        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 60)
+        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 70)
         // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.LeftMotor, maqueenPlusV2.MyEnumDir.Backward, 5)
         // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.RightMotor, maqueenPlusV2.MyEnumDir.Forward, 60)
         basic.pause(900)
     } else {
-        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 60)
+        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 70)
         maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CCW, 5)
         // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.LeftMotor, maqueenPlusV2.MyEnumDir.Forward, 60)
         // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.RightMotor, maqueenPlusV2.MyEnumDir.Backward, 5)
@@ -158,6 +149,7 @@ function untilV53L1X () {
         basic.pause(30)
     }
     StopMotors()
+    StopMotors()
 }
 function attendreDepart () {
     distancedetection = VL53L1X.readSingle()
@@ -167,13 +159,20 @@ function attendreDepart () {
         serial.writeValue("dist", distancedetection)
     }
     music.stopAllSounds()
+    music.play(music.createSoundExpression(
+    WaveShape.Sine,
+    5000,
+    0,
+    255,
+    0,
+    500,
+    SoundExpressionEffect.None,
+    InterpolationCurve.Linear
+    ), music.PlaybackMode.UntilDone)
+    music.stopAllSounds()
     basic.clearScreen()
 }
 function avance2cm () {
-    maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 30)
-    maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 30)
-    // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Forward, 50)
-    basic.pause(100)
     StopMotors()
 }
 let endOfMach = 0
