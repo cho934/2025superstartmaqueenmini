@@ -64,6 +64,22 @@ input.onButtonPressed(Button.A, function () {
     avance2cm()
     butiner()
 })
+function alarme () {
+    basic.showIcon(IconNames.Skull)
+    music.play(music.createSoundExpression(
+    WaveShape.Sine,
+    5000,
+    0,
+    255,
+    0,
+    500,
+    SoundExpressionEffect.None,
+    InterpolationCurve.Linear
+    ), music.PlaybackMode.UntilDone)
+    music.playTone(988, 200)
+    music.playTone(740, 200)
+    basic.pause(100)
+}
 function butiner () {
     butiner2 = 1
     maqueen.servoRun(maqueen.Servos.S2, 10)
@@ -76,11 +92,11 @@ function GOGOGO () {
     if (color == 2) {
         maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 250)
         maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 200)
-        untilDetectionAndTime(1400)
+        untilDetectionAndTime(1500)
     } else {
         maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 200)
         maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 250)
-        untilDetectionAndTime(1400)
+        untilDetectionAndTime(1450)
     }
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 50)
     // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Forward, 50)
@@ -143,6 +159,16 @@ function untilV53L1X () {
     }
     StopMotors()
 }
+function attendreDepart () {
+    distancedetection = VL53L1X.readSingle()
+    while (distancedetection < 100) {
+        alarme()
+        distancedetection = VL53L1X.readSingle()
+        serial.writeValue("dist", distancedetection)
+    }
+    music.stopAllSounds()
+    basic.clearScreen()
+}
 function avance2cm () {
     maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 30)
     maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 30)
@@ -157,9 +183,9 @@ let timer_init = 0
 let color = 0
 let butiner2 = 0
 let tirette = 0
-let countdetection = 0
-let dist = 0
 let enabledetection = 0
+let dist = 0
+let countdetection = 0
 tirette = 0
 butiner2 = 0
 color = 0
@@ -173,6 +199,7 @@ serial.redirectToUSB()
 VL53L1X.init()
 VL53L1X.setDistanceMode(VL53L1X.DistanceMode.Short)
 VL53L1X.setMeasurementTimingBudget(50000)
+attendreDepart()
 maqueen.servoRun(maqueen.Servos.S2, 83)
 let strip = neopixel.create(DigitalPin.P15, 4, NeoPixelMode.RGB)
 strip.clear()
