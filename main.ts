@@ -93,14 +93,14 @@ function GOGOGO () {
     // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Forward, 50)
     basic.pause(100)
     if (color == 2) {
-        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CCW, 5)
-        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 70)
+        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CCW, 10)
+        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 100)
         // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.LeftMotor, maqueenPlusV2.MyEnumDir.Backward, 5)
         // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.RightMotor, maqueenPlusV2.MyEnumDir.Forward, 60)
         basic.pause(900)
     } else {
-        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 70)
-        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CCW, 5)
+        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 100)
+        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CCW, 10)
         // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.LeftMotor, maqueenPlusV2.MyEnumDir.Forward, 60)
         // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.RightMotor, maqueenPlusV2.MyEnumDir.Backward, 5)
         basic.pause(900)
@@ -123,12 +123,6 @@ input.onButtonPressed(Button.B, function () {
     avance2cm()
     butiner()
 })
-input.onLogoEvent(TouchButtonEvent.Pressed, function () {
-    VL53L1X.init()
-    VL53L1X.setMeasurementTimingBudget(50000)
-    VL53L1X.setDistanceMode(VL53L1X.DistanceMode.Short)
-    untilV53L1X()
-})
 function untilV53L1X () {
     maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 180)
     maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 180)
@@ -141,7 +135,7 @@ function untilV53L1X () {
         400,
         false
         )
-        if (distancedetection >= 100 || distancedetection < 50) {
+        if (distancedetection >= 170 || distancedetection < 50) {
             StopMotors()
             break;
         }
@@ -151,6 +145,12 @@ function untilV53L1X () {
     StopMotors()
     StopMotors()
 }
+input.onLogoEvent(TouchButtonEvent.Pressed, function () {
+    VL53L1X.init()
+    VL53L1X.setMeasurementTimingBudget(50000)
+    VL53L1X.setDistanceMode(VL53L1X.DistanceMode.Short)
+    untilV53L1X()
+})
 function attendreDepart () {
     distancedetection = VL53L1X.readSingle()
     while (distancedetection < 100) {
@@ -159,16 +159,7 @@ function attendreDepart () {
         serial.writeValue("dist", distancedetection)
     }
     music.stopAllSounds()
-    music.play(music.createSoundExpression(
-    WaveShape.Sine,
-    5000,
-    0,
-    255,
-    0,
-    500,
-    SoundExpressionEffect.None,
-    InterpolationCurve.Linear
-    ), music.PlaybackMode.UntilDone)
+    music.play(music.createSoundExpression(WaveShape.Sine, 5000, 0, 255, 0, 500, SoundExpressionEffect.None, InterpolationCurve.Linear), music.PlaybackMode.UntilDone)
     music.stopAllSounds()
     basic.clearScreen()
 }
@@ -182,9 +173,9 @@ let timer_init = 0
 let color = 0
 let butiner2 = 0
 let tirette = 0
-let enabledetection = 0
-let dist = 0
 let countdetection = 0
+let dist = 0
+let enabledetection = 0
 tirette = 0
 butiner2 = 0
 color = 0
