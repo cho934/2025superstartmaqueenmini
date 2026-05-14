@@ -41,8 +41,8 @@ function untilDetectionAndTime (num: number) {
         maqueen.writeLED(maqueen.LED.LEDLeft, maqueen.LEDswitch.turnOff)
         maqueen.writeLED(maqueen.LED.LEDLeft, maqueen.LEDswitch.turnOff)
         if (distancedetection < 50) {
-            maqueen.writeLED(maqueen.LED.LEDLeft, maqueen.LEDswitch.turnOn)
-            maqueen.writeLED(maqueen.LED.LEDRight, maqueen.LEDswitch.turnOn)
+            // maqueen.writeLED(maqueen.LED.LEDLeft, maqueen.LEDswitch.turnOn)
+            // maqueen.writeLED(maqueen.LED.LEDRight, maqueen.LEDswitch.turnOn)
             StopMotors()
             maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CCW, 100)
             maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CCW, 100)
@@ -60,7 +60,7 @@ input.onButtonPressed(Button.A, function () {
     color = 1
     GOGOGO()
     recalage()
-    untilV53L1X()
+    untilWhite()
     avance2cm()
     butiner()
 })
@@ -75,19 +75,46 @@ function butiner () {
     butiner2 = 1
     maqueen.servoRun(maqueen.Servos.S2, 10)
 }
+function untilWhite () {
+    startTime = input.runningTime()
+    while (true) {
+        elapsed = input.runningTime() - startTime
+        if (advDetected == 0) {
+            if (elapsed < 1000) {
+                maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 200)
+                maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 200)
+            } else {
+                maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 40)
+                maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 40)
+            }
+        }
+        leftSensor = maqueen.readPatrol(maqueen.Patrol.PatrolLeft)
+        rightSensor = maqueen.readPatrol(maqueen.Patrol.PatrolRight)
+        serial.writeValue("L", leftSensor)
+        serial.writeValue("R", rightSensor)
+        if (leftSensor == 1 && rightSensor == 1) {
+            StopMotors()
+            break;
+        }
+        basic.pause(30)
+    }
+    StopMotors()
+}
 function GOGOGO () {
     maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 100)
     maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 100)
     // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Forward, 50)
     basic.pause(500)
+    // untilDetectionAndTime(1500)
+    // untilDetectionAndTime(1500)
     if (color == 2) {
         maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 250)
         maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 200)
-        untilDetectionAndTime(1500)
+        basic.pause(1500)
     } else {
-        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 200)
+        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 180)
         maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CW, 250)
-        untilDetectionAndTime(1450)
+        basic.pause(1500)
     }
     maqueen.motorRun(maqueen.Motors.All, maqueen.Dir.CW, 50)
     // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Forward, 50)
@@ -99,8 +126,8 @@ function GOGOGO () {
         // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.RightMotor, maqueenPlusV2.MyEnumDir.Forward, 60)
         basic.pause(900)
     } else {
-        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 100)
-        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CCW, 10)
+        maqueen.motorRun(maqueen.Motors.M1, maqueen.Dir.CW, 60)
+        maqueen.motorRun(maqueen.Motors.M2, maqueen.Dir.CCW, 20)
         // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.LeftMotor, maqueenPlusV2.MyEnumDir.Forward, 60)
         // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.RightMotor, maqueenPlusV2.MyEnumDir.Backward, 5)
         basic.pause(900)
@@ -119,7 +146,7 @@ input.onButtonPressed(Button.B, function () {
     color = 2
     GOGOGO()
     recalage()
-    untilV53L1X()
+    untilWhite()
     avance2cm()
     butiner()
 })
@@ -153,10 +180,10 @@ input.onLogoEvent(TouchButtonEvent.Pressed, function () {
 })
 function attendreDepart () {
     distancedetection = VL53L1X.readSingle()
-    while (distancedetection < 100) {
+    // serial.writeValue("dist", distancedetection)
+    while (distancedetection < 120) {
         alarme()
         distancedetection = VL53L1X.readSingle()
-        serial.writeValue("dist", distancedetection)
     }
     music.stopAllSounds()
     music.play(music.createSoundExpression(WaveShape.Sine, 5000, 0, 255, 0, 500, SoundExpressionEffect.None, InterpolationCurve.Linear), music.PlaybackMode.UntilDone)
@@ -167,6 +194,11 @@ function avance2cm () {
     StopMotors()
 }
 let endOfMach = 0
+let rightSensor = 0
+let leftSensor = 0
+let advDetected = 0
+let elapsed = 0
+let startTime = 0
 let distancedetection = 0
 let timer_ongoing = 0
 let timer_init = 0
@@ -198,6 +230,8 @@ basic.forever(function () {
     while (tirette == 0) {
         distancedetection = VL53L1X.readSingle()
         serial.writeValue("dist", distancedetection)
+        serial.writeValue("L", maqueen.readPatrol(maqueen.Patrol.PatrolLeft))
+        serial.writeValue("R", maqueen.readPatrol(maqueen.Patrol.PatrolRight))
         if (color == 1) {
             basic.clearScreen()
             basic.showIcon(IconNames.Skull)
@@ -221,7 +255,7 @@ basic.forever(function () {
     basic.pause(100)
     GOGOGO()
     recalage()
-    untilV53L1X()
+    untilWhite()
     avance2cm()
     StopMotors()
     butiner()
@@ -231,6 +265,7 @@ basic.forever(function () {
 control.inBackground(function () {
     while (true) {
         if (color == 2) {
+            // strip.showColor(neopixel.colors(NeoPixelColors.Blue))
             if (butiner2 == 1) {
                 strip.clear()
                 strip.showColor(neopixel.colors(NeoPixelColors.Black))
@@ -240,9 +275,10 @@ control.inBackground(function () {
                 strip.show()
                 basic.pause(500)
             } else {
-                strip.showColor(neopixel.colors(NeoPixelColors.Blue))
+            	
             }
         } else {
+            // strip.showColor(neopixel.colors(NeoPixelColors.Yellow))
             if (butiner2 == 1) {
                 strip.clear()
                 strip.showColor(neopixel.colors(NeoPixelColors.Black))
@@ -252,7 +288,7 @@ control.inBackground(function () {
                 strip.show()
                 basic.pause(500)
             } else {
-                strip.showColor(neopixel.colors(NeoPixelColors.Yellow))
+            	
             }
         }
         // maqueenPlusV2.controlMotor(maqueenPlusV2.MyEnumMotor.AllMotor, maqueenPlusV2.MyEnumDir.Forward, 50)
@@ -268,5 +304,18 @@ control.inBackground(function () {
     butiner()
     while (true) {
         StopMotors()
+    }
+})
+control.inBackground(function () {
+    while (true) {
+        distancedetection = VL53L1X.readSingle()
+        serial.writeValue("dist", distancedetection)
+        if (distancedetection < 100 && distancedetection > 0) {
+            advDetected = 1
+            StopMotors()
+        } else {
+            advDetected = 0
+        }
+        basic.pause(30)
     }
 })
